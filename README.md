@@ -9,5 +9,5 @@
 ## 11/26 更新
 - 加入兩組同筆數（每期 53 筆、重抽 1,000 次）的 P95 對照，資料來自 `04_temporal/04_p95_control.csv`。
 - 每個網格加入各時期公民科學紀錄數（iNaturalist、台灣中油生態地圖 APP、TBN-DP），可切換「柱色：公民科學比例」。
-- 植物照片：把照片放在 `images/bidens_alba.jpg`（大花咸豐草）與 `images/bidens_noninvasive.jpg`（非入侵組），頁面會自動顯示；沒有照片時只顯示文字。
+- 植物照片引用自 Wikimedia Commons（直接連結，未存入 repo）：大花咸豐草 [Starr 080601-5248](https://commons.wikimedia.org/wiki/File:Starr_080601-5248_Bidens_alba_var._radiata.jpg)（Forest & Kim Starr，CC BY 3.0）；白花鬼針原變種 [flower s3](https://commons.wikimedia.org/wiki/File:Bidens_pilosa_var._pilosa_flower_s3.JPG)（Alpsdake，CC BY-SA 3.0）。照片載入失敗時只顯示文字。
 - `og.png` 是分享連結時的預覽圖（1200×630）。

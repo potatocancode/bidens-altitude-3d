@@ -193,6 +193,8 @@ svg .num{font-variant-numeric:tabular-nums}
 .id-card.nat{border-top-color:var(--nat)}
 .id-card b{display:block;color:var(--ink);font-size:13.5px}
 .id-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;margin:4px 0;background:var(--line-2)}
+.id-card .credit{display:block;font-size:10.5px;color:var(--ink-3);margin:-2px 0 4px;line-height:1.4}
+.id-card .credit a{color:inherit}
 .concl ol{margin:0;padding-left:1.3em;font-size:13px;color:var(--ink-2);display:grid;gap:6px}
 .concl b{color:var(--ink)}
 details.info{font-size:12.5px;color:var(--ink-2);margin:2px 0 4px}
@@ -374,8 +376,8 @@ details.info p{margin:4px 0 0;padding:8px 10px;background:var(--raise);border:1p
     <div class="about" id="about">
       <h3>先認識兩組植物</h3>
       <div class="id-row">
-        <div class="id-card"><b>大花咸豐草（入侵）</b><img src="images/bidens_alba.jpg" alt="大花咸豐草的花：白色舌狀花大而明顯" onerror="this.remove()"><i>Bidens alba</i>。白色舌狀花大而明顯；1984 年引進，列為入侵植物。</div>
-        <div class="id-card nat"><b>非入侵組（歸化）</b><img src="images/bidens_noninvasive.jpg" alt="小白花鬼針的花：舌狀花很小或沒有" onerror="this.remove()">小白花鬼針＋白花鬼針原變種。舌狀花很小或沒有；兩者皆為歸化植物。</div>
+        <div class="id-card"><b>大花咸豐草（入侵）</b><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Starr_080601-5248_Bidens_alba_var._radiata.jpg/640px-Starr_080601-5248_Bidens_alba_var._radiata.jpg" alt="大花咸豐草（Bidens alba var. radiata）的頭狀花序：外圍有大而明顯的白色舌狀花" loading="lazy" onerror="this.nextElementSibling?.remove();this.remove()"><span class="credit">照片：<a href="https://commons.wikimedia.org/wiki/File:Starr_080601-5248_Bidens_alba_var._radiata.jpg" target="_blank" rel="noopener">Forest &amp; Kim Starr</a>，CC BY 3.0</span><i>Bidens alba</i>。白色舌狀花大而明顯；1984 年引進，列為入侵植物。</div>
+        <div class="id-card nat"><b>非入侵組（歸化）</b><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Bidens_pilosa_var._pilosa_flower_s3.JPG/640px-Bidens_pilosa_var._pilosa_flower_s3.JPG" alt="白花鬼針原變種（Bidens pilosa var. pilosa）的頭狀花序：沒有白色舌狀花，只有黃色管狀花" loading="lazy" onerror="this.nextElementSibling?.remove();this.remove()"><span class="credit">圖為白花鬼針原變種（無舌狀花）。照片：<a href="https://commons.wikimedia.org/wiki/File:Bidens_pilosa_var._pilosa_flower_s3.JPG" target="_blank" rel="noopener">Alpsdake</a>，CC BY-SA 3.0</span>小白花鬼針＋白花鬼針原變種。舌狀花很小或沒有；兩者皆為歸化植物。</div>
       </div>
     </div>
     <div class="chart" id="cBand">
