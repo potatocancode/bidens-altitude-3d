@@ -105,10 +105,11 @@ button,select,input{font:inherit;color:inherit}
 .stage[data-mode="table"] .stage-hint{display:none}
 .table-view{display:none;position:absolute;inset:0;overflow:auto;padding:20px 24px 40px}
 .stage[data-mode="table"] .table-view{display:block}
-.stage-hint{position:absolute;left:16px;top:12px;font-size:12px;color:var(--ink-3);pointer-events:none}
+.stage-hint{position:absolute;right:16px;top:12px;max-width:calc(100% - 32px);text-align:right;font-size:12px;color:var(--ink-3);pointer-events:none;z-index:2}
+.stage.storying .stage-hint{display:none}
 
 /* herbarium-label legend */
-.label-card{position:absolute;left:16px;bottom:16px;width:252px;background:var(--raise);
+.label-card{position:absolute;left:16px;bottom:16px;width:252px;max-height:calc(100% - 52px);overflow:auto;background:var(--raise);
   border:1px solid var(--line);border-radius:4px;box-shadow:var(--shadow);font-size:12.5px;line-height:1.45}
 .label-card>summary{list-style:none;cursor:pointer;padding:10px 14px 8px;border-bottom:1px dashed var(--line);
   display:flex;justify-content:space-between;align-items:baseline;gap:8px}
@@ -260,10 +261,12 @@ details.info p{margin:4px 0 0;padding:8px 10px;background:var(--raise);border:1p
   .label-card:not([open])>summary{padding:6px 10px;border-bottom:0}
   .label-card:not([open])>summary .sp{display:none}
   .label-card:not([open])>summary .tog::after{content:"圖例 ?"}
-  .stage-hint{right:120px}
+  .stage-hint{left:12px;right:96px;text-align:left;max-width:none}
+  .stage:has(.label-card[open]) .stage-hint{visibility:hidden}
+  .story{max-height:48%;overflow:auto}
   .story{bottom:8px;right:8px;width:calc(100% - 16px);padding:12px 12px 10px}
   #storyBtn{width:100%}
-  .story h2{font-size:17px}
+  .story h2{font-size:16px}
   .story p{font-size:13px}
   .stage.storying .label-card{display:none}
   .rail .ctl:not(.slice-ctl){width:100%;flex-wrap:nowrap}
@@ -272,6 +275,12 @@ details.info p{margin:4px 0 0;padding:8px 10px;background:var(--raise);border:1p
   .top-actions{width:100%}
   .panel{padding:16px}
   .table-view{padding:16px}
+}
+@media (max-height: 520px) and (orientation: landscape) and (max-width: 1000px){
+  .stage{height:calc(100vh - 12px);height:calc(100dvh - 12px);min-height:280px}
+  .story{width:min(420px,calc(100% - 16px));right:8px;bottom:8px;max-height:calc(100% - 16px);overflow:auto;padding:10px 12px}
+  .story h2{font-size:16px}
+  .story p{font-size:13px}
 }
 @media (prefers-reduced-motion: reduce){ .tip,.ctip{transition:none} }
 </style>
@@ -908,12 +917,12 @@ async function init3d(){
 
   // camera views — offsets scale up on narrow (portrait) screens
   const VIEWS = {
-    overview: { t: [0, 0, 14], p: [30, 540, 300] },
+    overview: { t: [0, 0, 14], p: [30, 540, 300], portrait: 1 },
     side:     { t: [4, 10, -22], p: [128, 104, 40] },  // closer, ~35° above the central range (from the east)
     west:     { t: [-40, 0, -25], p: [-175, 120, 140] },
   };
   function viewPose(name){
-    const v = VIEWS[name], asp = camera.aspect, f = asp < 1.15 ? clamp(1.15 / asp, 1, 2) : 1;
+    const v = VIEWS[name], asp = camera.aspect, f = asp < 1.15 ? (v.portrait ?? clamp(1.15 / asp, 1, 2)) : 1;
     const t = new THREE.Vector3(...v.t), p = new THREE.Vector3(...v.p); p.sub(t).multiplyScalar(f).add(t); return { t, p };
   }
   let tween = null;
@@ -1008,7 +1017,7 @@ document.documentElement.dataset.theme = storeGet('bidens-theme') === 'dark' ? '
 $('#themeBtn').textContent = document.documentElement.dataset.theme === 'dark' ? '淺色模式' : '深色模式';
 setRampColors();
 // legend: collapsed by default on phones
-if (matchMedia('(max-width: 640px)').matches) $('#legend').open = false;
+if (matchMedia('(max-width: 1000px), (max-height: 760px)').matches) $('#legend').open = false;
 document.addEventListener('keydown', e => { if (e.key === 'Escape'){ three?.clearPick(); showTip(-1); } });
 new ResizeObserver(() => { renderCharts(); drawMap2d(); }).observe(panel);
 
@@ -1024,7 +1033,7 @@ const STEPS = [
     text: `橘色柱子佈滿西部平原與淺山。${esc(band0.elev_band)} 的紀錄中，大花咸豐草佔 ${pct1(band0.prop_invasive)}（${fmtInt(band0.n_invasive)}／${fmtInt(band0.n_invasive + band0.n_native)} 筆）。` },
   { view: 'side', slice: 1000, period: 'all',
     head: '越往山上，橘色越少，藍色越多',
-    text: `從側面看中央山脈：大花咸豐草的紀錄比例由平地的 ${pct1(band0.prop_invasive)}，降到 ${esc(shortBand(bandTop.elev_band))} 的 ${pct1(bandTop.prop_invasive)}。右側長條圖逐帶列出。` },
+    text: `從側面看中央山脈：大花咸豐草的紀錄比例由平地的 ${pct1(band0.prop_invasive)}，降到 ${esc(shortBand(bandTop.elev_band))} 的 ${pct1(bandTop.prop_invasive)}。${matchMedia('(max-width: 1000px)').matches ? '下方' : '右側'}長條圖逐帶列出。` },
   { view: 'side', slice: M.crossover_m, period: 'all',
     head: `約 ${fmtInt(M.crossover_m)} m 以上，模型預測非入侵組紀錄較多`,
     text: `邏輯斯迴歸：高於約 ${fmtInt(M.crossover_m)} m，一筆紀錄是非入侵組的機率超過一半。要注意，把此高度以上的紀錄直接加總，大花仍佔 ${pct1(coStats.inv / (coStats.inv + coStats.nat))}（${fmtInt(coStats.inv)}／${fmtInt(coStats.inv + coStats.nat)} 筆），樣本也少。` },
@@ -1051,7 +1060,8 @@ function goStep(i){
   if (s.cycle){ let k = 0; cycleTimer = setInterval(() => { k++; if (k >= PERIODS.length){ clearInterval(cycleTimer); cycleTimer = null; return; } setState({ period: PERIODS[k] }); }, 3000); }
 }
 let legendWasOpen = true;
-function startStory(){ legendWasOpen = $('#legend').open; $('#legend').open = false; $('#story').classList.add('on'); stage.classList.add('storying'); goStep(0); $('#stNext').focus({ preventScroll: true }); }
+function startStory(){ legendWasOpen = $('#legend').open; $('#legend').open = false;
+  if (matchMedia('(max-width: 1000px)').matches) stage.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' }); $('#story').classList.add('on'); stage.classList.add('storying'); goStep(0); $('#stNext').focus({ preventScroll: true }); }
 function endStory(){ $('#legend').open = legendWasOpen; clearInterval(cycleTimer); setState({ color: 'species' }); $('#story').classList.remove('on'); stage.classList.remove('storying'); stepI = -1; $('#storyBtn').focus({ preventScroll: true }); }
 $('#storyBtn').addEventListener('click', startStory);
 $('#stNext').addEventListener('click', () => stepI >= STEPS.length - 1 ? endStory() : goStep(stepI + 1));
